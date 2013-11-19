@@ -29,13 +29,12 @@ var generator = {
 				return false;
 			} else {
 				residues[residue] = true;
-				console.log('a');
 			}
-			avg += swap[i];
+			avg += parseInt(swap[i]);
 		}
 		avg /= swap.length;
 		if (avg != numBalls)
-			return false;
+			return false; 
 
 		return true;
 	},
