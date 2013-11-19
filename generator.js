@@ -10,7 +10,7 @@ var generator = {
 		var maxSwap = Math.pow(10, (period+1)) - 1;
 		var validSwaps = new Array();
 		for (var curSwap = 0; curSwap < maxSwap; curSwap++) {
-			if (isValidSwap(curSwap)) {
+			if (this.isValidSwap(curSwap, numBalls, maxHeight, period)) {
 				validSwaps.push(curSwap);
 			}
 		}
@@ -18,16 +18,24 @@ var generator = {
 		return validSwaps;
 	},
 
-	isValidSwap:function(swap, maxHeight, period) {
+	isValidSwap:function(swap, numBalls, maxHeight, period) {
 		var residues = {};
+		swap = swap.toString();
+		var avg = 0;
 		for (var i = 0; i < swap.length; i++) {
-			var curThrow = numberForThrow(swap[i]); // handle a-z
+			var curThrow = this.numberForThrow(swap[i]); // handle a-z
 			var residue = (curThrow+i) % period;
-			if (residues[residue] || curThrow > maxHeight)
+			if (residues[residue] || curThrow > maxHeight || swap.length != period) {
 				return false;
-			else
-				residues[residue] == true;
+			} else {
+				residues[residue] = true;
+				console.log('a');
+			}
+			avg += swap[i];
 		}
+		avg /= swap.length;
+		if (avg != numBalls)
+			return false;
 
 		return true;
 	},
