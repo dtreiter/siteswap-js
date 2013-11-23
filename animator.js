@@ -7,7 +7,8 @@ var animator = {
 	},
 
 	getThrowEndX:function(theThrow, throwIndex) {
-		var endX = theThrow % 2 == 0 ? SAME_HAND_X : OTHER_HAND_X;
+		var endX = (theThrow % 2 == 0) ? SAME_HAND_X : OTHER_HAND_X;
+		return endX;
 	},
 
 	getBallPosition:function(theThrow, tickFrame) {
