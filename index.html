@@ -1,9 +1,40 @@
 <html>
 	<body>
+		<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 		<script src="generator.js"></script>
 		<script type="text/javascript">
-			console.log(generator.generateSwaps(4, 15, 3));
-			// generator.generateSwaps(4, 10, 2)
+			function getSwaps() {
+				var numBalls = parseInt($("#numBalls").val());
+				var maxHeight = parseInt($("#maxHeight").val());
+				var period = parseInt($("#period").val());
+				var res = generator.generateSwaps(numBalls, maxHeight, period);
+				$("#results").html("<p>" + res.join(", ") + "</p>");
+				return false;
+			}
 		</script>
+
+		<div id="form">
+			<form onsubmit="return getSwaps();">
+				<table>
+					<tr>
+						<td>Number of balls:</td>
+						<td><input type="text" id="numBalls" value="4"></td>
+					</tr>
+					<tr>
+						<td>Max throw height:</td>
+						<td><input type="text" id="maxHeight" value="15"></td>
+					</tr>
+					<tr>
+						<td>Period:</td>
+						<td><input type="text" id="period" value="3"></td>
+					</tr>
+					<tr>
+		    			<td><input type="submit" value="Submit"></td>
+		    		</tr>
+			</form>
+		</div>
+
+		<div id="results"></div>
+
 	</body>
 </html>
