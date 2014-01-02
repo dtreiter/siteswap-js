@@ -7,7 +7,8 @@
 				var numBalls = parseInt($("#numBalls").val());
 				var maxHeight = parseInt($("#maxHeight").val());
 				var period = parseInt($("#period").val());
-				var res = generator.generateSwaps(numBalls, maxHeight, period);
+				var limit = 100;
+				var res = generator.generateSwaps(numBalls, maxHeight, period, limit);
 				$("#results").html("<p>" + res.join(", ") + "</p>");
 				return false;
 			}
@@ -18,11 +19,11 @@
 				<table>
 					<tr>
 						<td>Number of balls:</td>
-						<td><input type="text" id="numBalls" value="4"></td>
+						<td><input type="text" id="numBalls" value="5"></td>
 					</tr>
 					<tr>
 						<td>Max throw height:</td>
-						<td><input type="text" id="maxHeight" value="15"></td>
+						<td><input type="text" id="maxHeight" value="5"></td>
 					</tr>
 					<tr>
 						<td>Period:</td>

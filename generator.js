@@ -1,6 +1,6 @@
 var generator = {
 
-	generateSwaps:function(numBalls, maxHeight, period) {
+	generateSwaps:function(numBalls, maxHeight, period, limit) {
 		if (maxHeight > 35 || period < 1 || numBalls < 1) // invalid inputs
 			return null;
 
@@ -9,9 +9,12 @@ var generator = {
 		for (var i = 0; i < period; i++) {
 			maxSwap += tosses[maxHeight];
 		}
+		if (maxHeight > 9)
+			maxSwap = parseInt(maxSwap, maxHeight+1);
 
-		validSwaps = new Array();
-		for (var curSwap = 0; curSwap < parseInt(maxSwap, maxHeight+1); curSwap++) {
+		var validSwaps = new Array();
+		var duplicates = {};
+		for (var curSwap = 0; curSwap <= maxSwap; curSwap++) {
 			var testSwap;
 			if (maxHeight > 9) {
 				testSwap = curSwap.toString(maxHeight+1);
@@ -20,7 +23,19 @@ var generator = {
 			}
 
 			if (this.isValidSwap(testSwap, numBalls, maxHeight, period)) {
+				if (duplicates[testSwap])
+					break;
+
+				// add duplicate swaps to hash
+				for (var i = 0; i < testSwap.length; i++) {
+					var dupSwap = testSwap.substring(i, testSwap.length) + testSwap.substring(0, i);
+					console.log(dupSwap);
+					duplicates[dupSwap] = true;
+				}
+
 				validSwaps.push(testSwap);
+				if (validSwaps.length > limit)
+					break;
 			}
 		}
 
