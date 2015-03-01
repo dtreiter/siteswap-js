@@ -1,0 +1,139 @@
+<html>
+  <body>
+    <canvas id="canvas" width="400" height="1500" style="border: 1px solid black;"></canvas>
+    <script>
+        "use strict";
+
+        /* The number of frames between each throw. */
+        var FRAME_RATE = 30;
+        var TOSS_DURATION = 40;
+        var TOSS_WIDTH = 180;
+        var BALL_SIZE = 10;
+        var GRAVITY   = .98;
+
+        var graphic;
+        var siteswap;
+        /* Used to call siteswap.toss every TOSS_DURATION number of frames. */
+        var loopNum;
+
+        function Graphic() {
+            this.canvas = document.getElementById("canvas");
+            this.context = canvas.getContext("2d");
+            this.w = canvas.width;
+            this.h = canvas.height;
+        }
+        Graphic.prototype.clear = function() {
+            this.context.clearRect(0, 0, this.w, this.h);
+        }
+        Graphic.prototype.fillCircle = function(x, y, r, color) {
+            var graphicY = this.h - y;
+            this.context.beginPath();
+            this.context.arc(x, graphicY, r, 0, 2*Math.PI);
+            this.context.fillStyle = color;
+            this.context.fill();
+        }
+
+        function Ball(graphic, x, y, r, color) {
+            this.graphic = graphic;
+            this.x = x;
+            this.y = y;
+            this.r = r;
+            this.color = color;
+            
+            this.decay = 0.4;
+            this.dx = 0;
+            this.dy = 0;
+            this.ddy = -GRAVITY;
+        }
+        Ball.prototype.update = function() {
+            /* Gravity */
+            this.dy += this.ddy;
+
+            var newX = this.x + this.dx;
+            var newY = this.y + this.dy;
+
+            if (newX - this.r < 0 || newX + this.r > this.graphic.w) {
+                this.dx = -this.decay * this.dx;
+                newX = this.x + this.dx;
+            }
+            if (newY - this.r < 0 || newY + this.r > this.graphic.h) {
+                this.dy = -this.decay * this.dy;
+                newY = this.y + this.dy;
+            }
+
+            /* Keep the ball from bouncing forever. */
+            if (newY < this.r+2 && Math.abs(this.dy) < 3) newY = this.r;
+            if (newY < this.r+2 && Math.abs(this.dx) < 3) newX = this.x;
+            
+            this.x = newX;
+            this.y = newY;
+        }
+        Ball.prototype.toss = function(dx, dy) {
+            this.dx = dx;
+            this.dy = dy;
+        }
+        Ball.prototype.draw = function() {
+            this.graphic.fillCircle(this.x, this.y, this.r, this.color);
+        }
+
+        function Siteswap(graphic, tosses) {
+            this.graphic = graphic;
+            this.tosses = tosses;
+
+            this.nextToss = 0;
+            this.period = this.tosses.length;
+            /* TODO Use an array of balls. */
+            var ballX = (this.graphic.w - TOSS_WIDTH) / 2;
+            this.ball = new Ball(this.graphic, ballX, 20, BALL_SIZE, "#ff0000");
+        }
+        Siteswap.prototype.toss = function() {
+            console.log("Toss!");
+            var toss = this.tosses[this.nextToss];
+            var ball = this.ball;
+
+            var dx = TOSS_WIDTH / (toss * TOSS_DURATION);
+            /* If the ball was previously moving right, move it left instead. */
+            if (ball.dx > 0) {
+                dx = -dx;
+            }
+
+            var dy = toss * 0.5 * GRAVITY * TOSS_DURATION;
+            this.ball.toss(dx, dy);
+            this.nextToss = (this.nextToss + 1) % this.period;
+        }
+        Siteswap.prototype.update = function() {
+            this.ball.update();
+        }
+        Siteswap.prototype.draw = function() {
+            this.ball.draw();
+        }
+
+        function mainLoop() {
+            graphic.clear();
+
+            if (loopNum == 0) {
+                siteswap.toss();
+            }
+            siteswap.update();
+            siteswap.draw();
+
+            loopNum = (loopNum + 1) % TOSS_DURATION;
+        }
+
+        function handleKeyboard(e) {
+            console.log("keyboard");
+        }
+
+        function init() {
+            graphic = new Graphic();
+            siteswap = new Siteswap(graphic, [1]);
+            window.addEventListener("keydown", handleKeyboard);
+
+            loopNum = 0;
+            setInterval(mainLoop, 1000/FRAME_RATE);
+        }
+
+        init();
+    </script>
+  </body>
+</html>
