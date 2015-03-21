@@ -15,9 +15,9 @@ var animator = (function() {
 
     function Graphic() {
         this.canvas = document.getElementById("animator");
-        this.context = canvas.getContext("2d");
-        this.w = canvas.width;
-        this.h = canvas.height;
+        this.context = this.canvas.getContext("2d");
+        this.w = this.canvas.width;
+        this.h = this.canvas.height;
     }
     Graphic.prototype.clear = function() {
         this.context.clearRect(0, 0, this.w, this.h);
