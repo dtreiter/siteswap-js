@@ -1,4 +1,4 @@
-var animator = (function() {
+(function() {
     "use strict";
     
     /* The number of frames between each throw. */
@@ -12,6 +12,12 @@ var animator = (function() {
     var siteswap;
     /* Used to call siteswap.toss every TOSS_DURATION number of frames. */
     var loopNum;
+
+    /* Hands enums. */
+    var Hand = {
+        "RIGHT" : 0,
+        "LEFT"  : 1
+    };
 
     function Graphic() {
         this.canvas = document.getElementById("animator");
@@ -101,11 +107,11 @@ var animator = (function() {
         for (var i = 0; i < this.numBalls; i++) {
             if (i % 2 == 1) {
                 ballX = (this.graphic.w - TOSS_WIDTH) / 2;
-                hand = "left";
+                hand = Hand.LEFT;
             }
             else {
                 ballX = (this.graphic.w + TOSS_WIDTH) / 2;
-                hand = "right";
+                hand = Hand.RIGHT;
             }
             this.balls[i] = new Ball(this.graphic, ballX, ballY, BALL_SIZE, hand, "#ff0000");
         }
@@ -128,13 +134,13 @@ var animator = (function() {
         if (toss % 2 == 0) {
             dx = 0;
         }
-        else if (ball.hand == "right") {
+        else if (ball.hand == Hand.RIGHT) {
             dx = -TOSS_WIDTH / (toss * TOSS_DURATION);
-            ball.hand = "left";
+            ball.hand = Hand.LEFT;
         }
-        else if (ball.hand == "left") {
+        else if (ball.hand == Hand.LEFT) {
             dx = TOSS_WIDTH / (toss * TOSS_DURATION);
-            ball.hand = "right";
+            ball.hand = Hand.RIGHT;
         }
         var dy = toss * 0.5 * GRAVITY * TOSS_DURATION;
 
