@@ -29,7 +29,6 @@ var Animator = (function() {
         /* TODO Has bug with excited state patterns. */
         tosses = defaultPattern;
         this.setPattern(defaultPattern);
-        siteswap = new Siteswap(graphic, tosses);
 
         loopNum = 0;
         /* TODO Use requestAnimationFrame() instead of setInterval */
@@ -46,6 +45,7 @@ var Animator = (function() {
              * i.e. "b" -> 11. */
             return parseInt(toss, 36);
         });
+        siteswap = new Siteswap(graphic, tosses);
     }
 
     function Graphic() {
