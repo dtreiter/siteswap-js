@@ -1,6 +1,6 @@
-(function() {
+var Animator = (function() {
     "use strict";
-    
+
     /* The number of frames between each throw. */
     var FRAME_RATE    =  30;
     var TOSS_DURATION =   8;
@@ -10,14 +10,43 @@
 
     var graphic;
     var siteswap;
-    /* Used to call siteswap.toss every TOSS_DURATION number of frames. */
-    var loopNum;
+    var loopNum; /* Used to call siteswap.toss every TOSS_DURATION number of frames. */
+    var tosses; /* Represents the pattern as an array of numeral values. */
+    var defaultPattern = "97531";
 
-    /* Hands enums. */
+    /**
+     * Enum for possible hands.
+     * @readonly
+     * @enum {number}
+     */
     var Hand = {
         "RIGHT" : 0,
         "LEFT"  : 1
     };
+
+    function Animator() {
+        graphic = new Graphic();
+        /* TODO Has bug with excited state patterns. */
+        tosses = defaultPattern;
+        this.setPattern(defaultPattern);
+        siteswap = new Siteswap(graphic, tosses);
+
+        loopNum = 0;
+        /* TODO Use requestAnimationFrame() instead of setInterval */
+        setInterval(mainLoop, 1000/FRAME_RATE);
+    }
+    /**
+     * Sets the pattern for the animator and restarts animation.
+     * @param {string} pattern - The siteswap pattern.
+     */
+    Animator.prototype.setPattern = function(pattern) {
+        /* TODO pattern should be an interface rather than a string? */
+        tosses = pattern.split("").map(function(toss) {
+            /* This is a trick to make sure all tosses are numeral values.
+             * i.e. "b" -> 11. */
+            return parseInt(toss, 36);
+        });
+    }
 
     function Graphic() {
         this.canvas = document.getElementById("animator");
@@ -190,16 +219,7 @@
         return Math.max.apply(null, numArray);
     }
 
-    function init() {
-        graphic = new Graphic();
-        /* TODO Has bug with excited state patterns. */
-        var tosses = "97531".split("").map(function(item){return parseInt(item, 36)});
-        siteswap = new Siteswap(graphic, tosses);
-
-        loopNum = 0;
-        /* TODO Use requestAnimationFrame() instead of setInterval */
-        setInterval(mainLoop, 1000/FRAME_RATE);
-    }
-
-    init();
+    return Animator;
 })();
+
+var myAnim = new Animator();
