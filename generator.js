@@ -1,5 +1,5 @@
-var generator = (function() {
-    function generateSwaps(numBalls, maxHeight, period, limit) {
+var generator = new function() {
+    this.generateSwaps = function(numBalls, maxHeight, period, limit) {
         /* Validate parameters. */
         if (maxHeight > 35 || period < 1 || numBalls < 1) {
             return;
@@ -45,7 +45,7 @@ var generator = (function() {
     }
     
     /* Input swap is a string. */
-    function isValidSwap(swap, numBalls, maxHeight, period) {
+    this.isValidSwap = function(swap, numBalls, maxHeight, period) {
         var residues = {};
         var avg = 0;
         
@@ -68,8 +68,7 @@ var generator = (function() {
         return true;
     }
     
-    function numberForToss(curToss) {
+    this.numberForToss = function(curToss) {
         return parseInt(curToss, 36);
     } 
-    
-})();
+};
