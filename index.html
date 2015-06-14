@@ -1,45 +1,41 @@
 <html>
   <body>
-    <div id="form">
-      <form onsubmit="return getSwaps();">
-	<table>
-	  <tr>
-	    <td>Number of balls:</td>
-	    <td><input type="text" id="numBalls" value="4"></td>
-	  </tr>
-	  <tr>
-	    <td>Max throw height:</td>
-	    <td><input type="text" id="maxHeight" value="15"></td>
-	  </tr>
-	  <tr>
-	    <td>Period:</td>
-	    <td><input type="text" id="period" value="3"></td>
-	  </tr>
-	  <tr>
-	    <td><input type="submit" value="Submit"></td>
-	  </tr>
-      </form>
-    </div>
+    <script type="text/template" id="siteswap-view">
+      <li><%= pattern %></li>
+    </script>
 
-    <div id="results"></div>
+    <script type="text/template" id="controls-view">
+      <table>
+        <tr>
+          <td>Number of balls:</td>
+          <td><input type="text" id="num-balls" value="<%= numBalls %>"></td>
+        </tr>
+        <tr>
+          <td>Max throw height:</td>
+          <td><input type="text" id="max-height" value="<%= maxHeight %>"></td>
+        </tr>
+        <tr>
+          <td>Period:</td>
+          <td><input type="text" id="period" value="<%= period %>"></td>
+        </tr>
+        <tr>
+          <td><button id="controls-submit">Submit</button></td>
+        </tr>
+      </table>
+    </script>
+
+    <div id="container" style="float:right">
+        <div id="controls"></div>
+        <ul id="siteswaps-list"></ul>
+    </div>
 
     <canvas id="animator" width="400" height="800" style="border: 1px solid black;"></canvas>
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/backbone/backbone.js"></script>
-    <script type="text/javascript">
-      function getSwaps() {
-            var numBalls = parseInt($("#numBalls").val());
-            var maxHeight = parseInt($("#maxHeight").val());
-            var period = parseInt($("#period").val());
-            var limit = 100;
-            var res = generator.generateSwaps(numBalls, maxHeight, period, limit);
-            $("#results").html("<p>" + res.join(", ") + "</p>");
-            return false;
-      }
-    </script>
     <script src="generator.js"></script>
     <script src="animator.js"></script>
+    <script src="view.js"></script>
   </body>
 </html>

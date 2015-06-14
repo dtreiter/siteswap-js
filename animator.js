@@ -222,4 +222,4 @@ var Animator = (function() {
     return Animator;
 })();
 
-var myAnim = new Animator();
+var animator = new Animator();
