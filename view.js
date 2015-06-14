@@ -36,15 +36,15 @@ var ControlsView = Backbone.View.extend({
 
     /* TODO There shouldn't be so many changeFoo's. */
     changeNumBalls: function(e) {
-        this.numBalls = $(e.currentTarget).val();
+        this.numBalls = parseInt($(e.currentTarget).val());
     },
 
     changeMaxHeight: function(e) {
-        this.maxHeight = $(e.currentTarget).val();
+        this.maxHeight = parseInt($(e.currentTarget).val());
     },
 
     changePeriod: function(e) {
-        this.period = $(e.currentTarget).val();
+        this.period = parseInt($(e.currentTarget).val());
     },
 
     generate: function() {
