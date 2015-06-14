@@ -1,17 +1,11 @@
-siteswap-js
+Siteswap.js
 ===========
 
-Siteswap generator and animator in Javascript
+A siteswap generator and animator in Javascript!
 
+**NOTE:** Currently does not compute transition throws for excited state patterns -- it will somewhat comically drop the balls if it animates an excited state or invalid siteswap.
 
 TODO
-[X] Make generator work for throws > 9
-[X] Remove duplicate patterns
-[ ] Rotate siteswap into standard orientation (ie. 345 -> 534)
-[ ] Support multiplexes
-[ ] Support async patterns
-
-[ ] Get balls drawn on screen
-[ ] Animate ball path
-
-[ ] Make Snazzy UI (AngularUI?)
+----
+- Rotate siteswap into standard orientation (ie. 345 -> 534)
+- Compute transition throws for excited state patterns
