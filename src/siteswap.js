@@ -1,7 +1,5 @@
 import {Ball, GRAVITY} from './ball.js';
 
-export const TOSS_DURATION = 8;
-
 const BALL_SIZE = 10;
 const TOSS_WIDTH = 180;
 
@@ -20,6 +18,9 @@ const Hand = {
 };
 
 export class Siteswap {
+  #loopNum = 0;
+  #tossDuration = undefined;
+
   constructor(graphic, tosses) {
     this.graphic = graphic;
     this.tosses = tosses;
@@ -33,6 +34,12 @@ export class Siteswap {
     /* The number of balls is the average of the tosses. */
     this.numBalls = this.tosses.reduce((a, b) => a + b) / this.tosses.length;
     this.numSites = getArrayMax(this.tosses);
+
+    // Toss duration should get shorter for patterns with higher throws, and
+    // vice versa. The following interpolation works decently: y = -(2/3)x + 14
+    // TODO: Make this a quadratic interpolation.
+    this.#tossDuration = Math.floor(-2/3 * this.numSites + 14);
+
     this.balls = new Array();
 
     /* Initialize the whole sites queue to zeros. */
@@ -56,7 +63,7 @@ export class Siteswap {
     return new Ball(this.graphic, ballX, ballY, BALL_SIZE, hand, "#ff0000");
   }
 
-  toss() {
+  #toss() {
     /* When a ball gets tossed, it gets moved ahead in the balls array
        according to the toss number. The balls array wraps around using
        modulo numSites. */
@@ -79,14 +86,14 @@ export class Siteswap {
       dx = 0;
     }
     else if (ball.hand == Hand.RIGHT) {
-      dx = -TOSS_WIDTH / (toss * TOSS_DURATION);
+      dx = -TOSS_WIDTH / (toss * this.#tossDuration);
       ball.hand = Hand.LEFT;
     }
     else if (ball.hand == Hand.LEFT) {
-      dx = TOSS_WIDTH / (toss * TOSS_DURATION);
+      dx = TOSS_WIDTH / (toss * this.#tossDuration);
       ball.hand = Hand.RIGHT;
     }
-    let dy = toss * 0.5 * GRAVITY * TOSS_DURATION;
+    let dy = toss * 0.5 * GRAVITY * this.#tossDuration;
 
     ball.toss(dx, dy);
 
@@ -102,7 +109,7 @@ export class Siteswap {
     this.curSite  = (this.curSite  + 1) % this.numSites;
   }
 
-  update() {
+  #update() {
     this.balls.forEach(ball => {
       /* TODO This is ugly. */
       if (ball != 0) {
@@ -111,11 +118,21 @@ export class Siteswap {
     });
   }
 
-  draw() {
+  #draw() {
     this.balls.forEach(ball => {
       if (ball != 0) {
         ball.draw();
       }
     });
+  }
+
+  tick() {
+    if (this.#loopNum == 0) {
+      this.#toss();
+    }
+    this.#update();
+    this.#draw();
+
+    this.#loopNum = (this.#loopNum + 1) % this.#tossDuration;
   }
 }

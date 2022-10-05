@@ -1,4 +1,4 @@
-import {Siteswap, TOSS_DURATION} from './siteswap.js';
+import {Siteswap} from './siteswap.js';
 import {Graphic} from './graphic.js';
 
 /* The number of frames between each throw. */
@@ -10,8 +10,6 @@ class Animator {
   #graphic = new Graphic();
   /* Represents the pattern as an array of numeral values. */
   #siteswap = undefined;
-  /* Used to call siteswap.toss every TOSS_DURATION number of frames. */
-  #loopNum = 0;
 
   constructor() {
     this.setPattern(DEFAULT_PATTERN);
@@ -36,14 +34,7 @@ class Animator {
 
   mainLoop() {
     this.#graphic.clear();
-
-    if (this.#loopNum == 0) {
-      this.#siteswap.toss();
-    }
-    this.#siteswap.update();
-    this.#siteswap.draw();
-
-    this.#loopNum = (this.#loopNum + 1) % TOSS_DURATION;
+    this.#siteswap.tick();
   }
 }
 
