@@ -61,13 +61,14 @@ export class Siteswap {
        according to the toss number. The balls array wraps around using
        modulo numSites. */
     const toss = this.tosses[this.nextToss];
-    const ball = this.balls[this.curSite];
+    let ball = this.balls[this.curSite];
     if (ball === 0 && toss === 0) {
       return;
     } else if (ball === 0 && toss !== 0) {
       /* Non-empty toss but no ball at this site. Only happens during
        * initialization of the pattern. */
-      this.balls[this.curSite] = this.#createBall(this.curSite);
+      ball = this.#createBall(this.curSite);
+      this.balls[this.curSite] = ball;
     }
 
     /* Calculate velocities for ball. */
