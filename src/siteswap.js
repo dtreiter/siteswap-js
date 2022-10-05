@@ -39,22 +39,21 @@ export class Siteswap {
     for (let i = 0; i < this.numSites; i++) {
       this.balls.push(0);
     }
+  }
 
+  #createBall(tossIndex) {
     /* Initialize each ball. */
     let hand;
     let ballX;
     const ballY = 20;
-    for (let i = 0; i < this.numBalls; i++) {
-      if (i % 2 == 1) {
-        ballX = (this.graphic.w - TOSS_WIDTH) / 2;
-        hand = Hand.LEFT;
-      }
-      else {
-        ballX = (this.graphic.w + TOSS_WIDTH) / 2;
-        hand = Hand.RIGHT;
-      }
-      this.balls[i] = new Ball(this.graphic, ballX, ballY, BALL_SIZE, hand, "#ff0000");
+    if (tossIndex % 2 == 1) {
+      ballX = (this.graphic.w - TOSS_WIDTH) / 2;
+      hand = Hand.LEFT;
+    } else {
+      ballX = (this.graphic.w + TOSS_WIDTH) / 2;
+      hand = Hand.RIGHT;
     }
+    return new Ball(this.graphic, ballX, ballY, BALL_SIZE, hand, "#ff0000");
   }
 
   toss() {
@@ -63,9 +62,12 @@ export class Siteswap {
        modulo numSites. */
     const toss = this.tosses[this.nextToss];
     const ball = this.balls[this.curSite];
-    if (ball == 0) {
-      /* No ball at this site. */
+    if (ball === 0 && toss === 0) {
       return;
+    } else if (ball === 0 && toss !== 0) {
+      /* Non-empty toss but no ball at this site. Only happens during
+       * initialization of the pattern. */
+      this.balls[this.curSite] = this.#createBall(this.curSite);
     }
 
     /* Calculate velocities for ball. */
