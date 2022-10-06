@@ -39,3 +39,6 @@ class Animator {
 }
 
 const animator = new Animator();
+
+// TODO
+window.animator = animator;

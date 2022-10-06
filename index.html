@@ -1,41 +1,40 @@
 <html>
   <body>
-    <script type="text/template" id="siteswap-view">
-      <li><%= pattern %></li>
-    </script>
-
-    <script type="text/template" id="controls-view">
-      <table>
-        <tr>
-          <td>Number of balls:</td>
-          <td><input type="text" id="num-balls" value="<%= numBalls %>"></td>
-        </tr>
-        <tr>
-          <td>Max throw height:</td>
-          <td><input type="text" id="max-height" value="<%= maxHeight %>"></td>
-        </tr>
-        <tr>
-          <td>Period:</td>
-          <td><input type="text" id="period" value="<%= period %>"></td>
-        </tr>
-        <tr>
-          <td><button id="controls-submit">Submit</button></td>
-        </tr>
-      </table>
-    </script>
-
-    <div id="container" style="float:right">
-        <div id="controls"></div>
-        <ul id="siteswaps-list"></ul>
+    <div id="container" style="float:right; margin-right: 50%;">
+      <div id="controls">
+        <table>
+          <tr>
+            <td>Number of balls:</td>
+            <td><input type="text" id="num-balls" value="4"></td>
+          </tr>
+          <tr>
+            <td>Max throw height:</td>
+            <td><input type="text" id="max-height" value="12"></td>
+          </tr>
+          <tr>
+            <td>Period:</td>
+            <td><input type="text" id="period" value="3"></td>
+          </tr>
+          <tr>
+            <td>
+              <button id="controls-submit" onclick="generate()">
+                Submit
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <ul id="siteswaps-list"></ul>
     </div>
 
-    <canvas id="animator" width="400" height="800" style="border: 1px solid black;"></canvas>
+    <canvas id="animator" 
+            width="400" 
+            height="800" 
+            style="border: 1px solid black;">
+    </canvas>
 
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/underscore/underscore.js"></script>
-    <script src="bower_components/backbone/backbone.js"></script>
-    <script src="generator.js"></script>
+    <script src="src/generator.js"></script>
     <script src="src/animator.js" type="module"></script>
-    <script src="view.js"></script>
+    <script src="src/view.js"></script>
   </body>
 </html>
