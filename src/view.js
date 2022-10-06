@@ -27,7 +27,6 @@ function setPattern(siteswap) {
 }
 
 function generate() {
-  console.log('call:generate:0');
   const siteswaps = generator.generateSwaps(numBalls(), maxHeight(), period(), LIMIT);
   showResults(siteswaps);
 }
