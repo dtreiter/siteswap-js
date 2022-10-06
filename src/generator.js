@@ -1,3 +1,36 @@
+/**
+ * Allows comparing siteswaps containing letter digits.
+ */
+function base36Greater(a, b) {
+  const x = parseInt(a, 36);
+  const y = parseInt(b, 36);
+  return x > y;
+}
+
+/**
+ * Rotates a siteswap to the largest number representation of itself.
+ * Examples:
+ *   345 -> 534
+ *   747 -> 774
+ */
+// string -> string
+function rotateMax(siteswap) {
+  let max = siteswap;
+  for (let i = 0; i < siteswap.length; i++) {
+    const rotation = rotate(siteswap, i);
+    if (base36Greater(rotation, max)) {
+      max = rotation;
+    }
+  }
+  return max;
+}
+
+// string, number -> string
+function rotate(string, amount) {
+  const len = string.length;
+  return string.slice(amount, len) + string.slice(0, amount);
+}
+
 var generator = new function() {
     this.generateSwaps = function(numBalls, maxHeight, period, limit) {
         /* Validate parameters. */
@@ -34,14 +67,14 @@ var generator = new function() {
                     var dupSwap = testSwap.substring(i, testSwap.length) + testSwap.substring(0, i);
                     duplicates[dupSwap] = true;
                 }
-                
+
                 validSwaps.push(testSwap);
                 if (validSwaps.length > limit)
                     break;
             }
         }
         
-        return validSwaps;
+        return validSwaps.map(rotateMax).sort();
     }
     
     /* Input swap is a string. */
