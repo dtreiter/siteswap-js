@@ -70,6 +70,8 @@ export class Siteswap {
     const toss = this.tosses[this.nextToss];
     let ball = this.balls[this.curSite];
     if (ball === 0 && toss === 0) {
+      this.nextToss = (this.nextToss + 1) % this.period;
+      this.curSite  = (this.curSite  + 1) % this.numSites;
       return;
     } else if (ball === 0 && toss !== 0) {
       /* Non-empty toss but no ball at this site. Only happens during
